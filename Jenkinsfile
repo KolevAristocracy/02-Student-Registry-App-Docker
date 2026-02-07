@@ -11,16 +11,20 @@ pipeline{
                 sh 'npm install'
             }
         }
+        stage("Testing"){
+            failFast true
+            parallel {
+                stage("Run npm security"){
+                    steps{
+                        sh 'npm audit'
+                    }
+                }
 
-        stage("Run npm security"){
-            steps{
-                sh 'npm audit'
-            }
-        }
-
-        stage("Run UI Tests"){
-            steps{
-                sh 'npm test'
+                stage("Run UI Tests"){
+                    steps{
+                        sh 'npm test'
+                    }
+                }
             }
         }
     }
